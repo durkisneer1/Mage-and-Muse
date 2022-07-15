@@ -11,6 +11,7 @@ class Game:
         
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption('Mage and Muse')
+        pg.display.set_icon(pg.image.load('../graphics/character/wand/wand.png'))
         self.clock = pg.time.Clock()
 
         self.level = Level(self.screen)
