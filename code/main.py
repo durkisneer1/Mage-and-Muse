@@ -107,8 +107,8 @@ class Game:
                     sys.exit()
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
-                        pg.quit()
-                        sys.exit()
+                        self.level = Level(self.screen)
+                        self.menu()
                     elif event.key == pg.K_RETURN:
                         self.level = Level(self.screen)
                         pg.mixer.music.play(-1)
@@ -133,8 +133,8 @@ class Game:
                     sys.exit()
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
-                        pg.quit()
-                        sys.exit()
+                        self.level = Level(self.screen)
+                        self.menu()
                     elif event.key == pg.K_RETURN:
                         self.level = Level(self.screen)
                         pg.mixer.music.play(-1)

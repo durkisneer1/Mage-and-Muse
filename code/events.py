@@ -133,6 +133,8 @@ class Horns(pg.sprite.Sprite):
         elif self.side == 'right':
             self.rect = self.image.get_rect(bottomleft = (WIDTH, 0))
 
+        self.mask = pg.mask.from_surface(self.image)
+
         self.speed = 10
 
         # soundfx

@@ -69,6 +69,8 @@ class Player(pg.sprite.Sprite):
             facing_left = pg.transform.flip(image, True, False)
             self.image = facing_left
         
+        self.mask = pg.mask.from_surface(self.image)
+        
         # set the rect
         if self.on_ground and self.on_right:
             self.rect = self.image.get_rect(bottomright = self.rect.bottomright)

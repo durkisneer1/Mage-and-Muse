@@ -14,7 +14,7 @@ class Level:
         self.SPAWN_RANDOM_OBS_EASY = pg.USEREVENT + 1
         self.SPAWN_RANDOM_OBS_HARD = pg.USEREVENT + 2
         pg.time.set_timer(self.SPAWN_RANDOM_OBS_EASY, 1300)
-        pg.time.set_timer(self.SPAWN_RANDOM_OBS_HARD, 850)
+        pg.time.set_timer(self.SPAWN_RANDOM_OBS_HARD, 800)
 
         # variable setup
         self.display_surf = surface
@@ -36,6 +36,7 @@ class Level:
         self.hit_played = False
         self.L_cymbal_sprite = None
         self.R_cymbal_sprite = None
+        self.horn_sprite = None
 
         # timer
         self.player_hit_time = 0
@@ -103,9 +104,9 @@ class Level:
                         self.obs_group.add(self.piano_sprite)
                         self.crash_played = False
                     elif pick == 2:
-                        horn_sprite = Horns(self.display_surf, self.decor_sprite.c_rect)
-                        self.obs_group.add(horn_sprite)
-                        horn_sprite.sfx.play()
+                        self.horn_sprite = Horns(self.display_surf, self.decor_sprite.c_rect)
+                        self.obs_group.add(self.horn_sprite)
+                        self.horn_sprite.sfx.play()
                     elif pick == 3:
                         self.L_cymbal_sprite = LeftCymbal(self.display_surf)
                         self.R_cymbal_sprite = RightCymbal(self.display_surf)
@@ -125,9 +126,9 @@ class Level:
                         self.obs_group.add(self.piano_sprite)
                         self.crash_played = False
                     elif pick == 2:
-                        horn_sprite = Horns(self.display_surf, self.decor_sprite.c_rect)
-                        self.obs_group.add(horn_sprite)
-                        horn_sprite.sfx.play()
+                        self.horn_sprite = Horns(self.display_surf, self.decor_sprite.c_rect)
+                        self.obs_group.add(self.horn_sprite)
+                        self.horn_sprite.sfx.play()
                     elif pick == 3:
                         self.L_cymbal_sprite = LeftCymbal(self.display_surf)
                         self.R_cymbal_sprite = RightCymbal(self.display_surf)
@@ -214,15 +215,25 @@ class Level:
 
         for sprite in self.obs_group:
             if sprite.rect.colliderect(self.player.sprite.rect) and self.player_hit == False:
-                pick = random.randint(1, 3)
-                self.player.sprite.sfx = pg.mixer.Sound(f'../sounds/hurt/{pick}.mp3')
-                self.player.sprite.sfx.set_volume(0.8)
-                self.player.sprite.sfx.play()
-                self.player.sprite.stun()
-                self.player_hit_time = pg.time.get_ticks()
-                self.player_hp.hit()
-
-                self.player_hit = True
+                if self.horn_sprite != None and sprite == self.horn_sprite:
+                    if pg.sprite.collide_mask(self.player.sprite, self.horn_sprite):
+                        pick = random.randint(1, 3)
+                        self.player.sprite.sfx = pg.mixer.Sound(f'../sounds/hurt/{pick}.mp3')
+                        self.player.sprite.sfx.set_volume(0.8)
+                        self.player.sprite.sfx.play()
+                        self.player.sprite.stun()
+                        self.player_hit_time = pg.time.get_ticks()
+                        self.player_hp.hit()
+                        self.player_hit = True
+                else:
+                    pick = random.randint(1, 3)
+                    self.player.sprite.sfx = pg.mixer.Sound(f'../sounds/hurt/{pick}.mp3')
+                    self.player.sprite.sfx.set_volume(0.8)
+                    self.player.sprite.sfx.play()
+                    self.player.sprite.stun()
+                    self.player_hit_time = pg.time.get_ticks()
+                    self.player_hp.hit()
+                    self.player_hit = True
 
         if current_time - self.player_hit_time > 2000 and self.player_hit == True:
             self.player_hit = False

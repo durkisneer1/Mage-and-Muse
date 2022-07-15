@@ -31,8 +31,10 @@ class Win:
         self.sub_font = pg.font.Font('../fonts/Kenney Pixel.ttf', 48)
         self.win_info = self.title_font.render('YOU BEAT THE BEAT !', True, 'white')
         self.replay_info = self.sub_font.render('.Press ENTER to play again.', True, 'white')
+        self.menu_info = self.sub_font.render('.or press ESC to return to menu.', True, 'white')
         self.win_rect = self.win_info.get_rect(center = (WIDTH / 2, HEIGHT / 2 - 20))
         self.replay_rect = self.replay_info.get_rect(center = (WIDTH / 2, HEIGHT / 2 + 20))
+        self.menu_rect = self.menu_info.get_rect(center = (WIDTH / 2, HEIGHT / 2 + 60))
 
         self.bg_image = pg.transform.scale(pg.image.load('../graphics/menu/win.png'), (1200, 700))
         self.bg_rect = self.bg_image.get_rect(topleft = (0, 0))
@@ -42,6 +44,7 @@ class Win:
         self.display_surf.blit(self.bg_image, self.bg_rect)
         self.display_surf.blit(self.win_info, self.win_rect)
         self.display_surf.blit(self.replay_info, self.replay_rect)
+        self.display_surf.blit(self.menu_info, self.menu_rect)
 
 class Lose:
     def __init__(self, surface):
@@ -52,8 +55,10 @@ class Lose:
         self.sub_font = pg.font.Font('../fonts/Kenney Pixel.ttf', 48)
         self.death_info = self.title_font.render('YOU\'RE NOT SHARP ENOUGH !', True, 'white')
         self.replay_info = self.sub_font.render('.Press ENTER to start over.', True, 'white')
+        self.menu_info = self.sub_font.render('.or press ESC to return to menu.', True, 'white')
         self.death_rect = self.death_info.get_rect(center = (WIDTH / 2, HEIGHT / 2 - 20))
         self.replay_rect = self.replay_info.get_rect(center = (WIDTH / 2, HEIGHT / 2 + 20))
+        self.menu_rect = self.menu_info.get_rect(center = (WIDTH / 2, HEIGHT / 2 + 60))
 
         self.bg_image = pg.transform.scale(pg.image.load('../graphics/menu/lose.png'), (1200, 700))
         self.bg_rect = self.bg_image.get_rect(topleft = (0, 0))
@@ -63,6 +68,7 @@ class Lose:
         self.display_surf.blit(self.bg_image, self.bg_rect)
         self.display_surf.blit(self.death_info, self.death_rect)
         self.display_surf.blit(self.replay_info, self.replay_rect)
+        self.display_surf.blit(self.menu_info, self.menu_rect)
 
 class Pause:
     def __init__(self, surface):
