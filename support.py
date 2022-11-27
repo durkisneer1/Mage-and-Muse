@@ -1,8 +1,8 @@
 from os import walk
 import pygame as pg
 
-def import_folder(path, scale):
 
+def import_folder(path, scale):
     surf_list = []
     for _, __, img_file in walk(path):
         for image in img_file:

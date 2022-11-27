@@ -1,7 +1,10 @@
-import pygame as pg
-from support import import_folder
-from settings import *
 import math
+
+import pygame as pg
+
+from settings import *
+from support import import_folder
+
 
 class Player(pg.sprite.Sprite):
     def __init__(self, pos, surface, jump_dust):
@@ -12,7 +15,7 @@ class Player(pg.sprite.Sprite):
         self.char_frame = 0
         self.char_anim_speed = 0.1
         self.image = self.anims['idle'][self.char_frame]
-        self.rect = self.image.get_rect(bottomleft = pos)
+        self.rect = self.image.get_rect(bottomleft=pos)
 
         # dust particles
         self.dust = import_folder('graphics/character/dust_particles/run', 1)
@@ -46,16 +49,14 @@ class Player(pg.sprite.Sprite):
         self.sfx = None
 
     def char_import(self):
-
         char_path = 'graphics/character/'
-        self.anims = {'idle':[], 'run':[], 'jump':[], 'fall':[], 'hit':[]}
+        self.anims = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'hit': []}
 
         for anim in self.anims.keys():
             full_path = char_path + anim
             self.anims[anim] = import_folder(full_path, 3)
 
     def char_anim(self):
-        
         # loop over frame index
         char_anim = self.anims[self.status]
         self.char_frame += self.char_anim_speed
@@ -68,26 +69,25 @@ class Player(pg.sprite.Sprite):
         else:
             facing_left = pg.transform.flip(image, True, False)
             self.image = facing_left
-        
+
         self.mask = pg.mask.from_surface(self.image)
-        
+
         # set the rect
         if self.on_ground and self.on_right:
-            self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
+            self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
         elif self.on_ground and self.on_left:
-            self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
+            self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
         elif self.on_ground:
-            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
 
         elif self.on_ceiling and self.on_right:
-            self.rect = self.image.get_rect(topright = self.rect.topright)
+            self.rect = self.image.get_rect(topright=self.rect.topright)
         elif self.on_ceiling and self.on_left:
-            self.rect = self.image.get_rect(topleft = self.rect.topleft)
+            self.rect = self.image.get_rect(topleft=self.rect.topleft)
         elif self.on_ceiling:
-            self.rect = self.image.get_rect(midtop = self.rect.midtop)
+            self.rect = self.image.get_rect(midtop=self.rect.midtop)
 
     def dust_anim(self):
-
         if self.status == 'run' and self.on_ground:
             self.dust_frame += self.dust_anim_speed
             if self.dust_frame >= len(self.dust):
@@ -104,10 +104,9 @@ class Player(pg.sprite.Sprite):
                 self.display_surf.blit(flipped_dust, pos)
 
     def handle_wand(self, mouse_pos):
-
         wand = self.wand[0]
         wand = pg.transform.rotate(wand, -45)
-        
+
         mouse_x, mouse_y = mouse_pos
 
         x, y = self.rect.center
@@ -115,12 +114,11 @@ class Player(pg.sprite.Sprite):
         angle = (180 / math.pi) * -math.atan2(rel_y, rel_x)
 
         wand_copy = pg.transform.rotate(wand, angle)
-        wand_rect = wand_copy.get_rect(center = (x, y))
+        wand_rect = wand_copy.get_rect(center=(x, y))
 
         self.display_surf.blit(wand_copy, wand_rect)
 
     def get_input(self, events):
-
         keys = pg.key.get_pressed()
 
         if keys[pg.K_d]:
@@ -151,7 +149,7 @@ class Player(pg.sprite.Sprite):
                     self.jump()
                     self.jump_dust(self.rect.midbottom)
                     self.jumped = False
-                
+
                 if event.key == pg.K_LSHIFT and self.dashed == False:
                     if self.direction.x > 0:
                         self.direction.x = self.dash_speed
@@ -160,7 +158,6 @@ class Player(pg.sprite.Sprite):
                     self.dashed = True
 
     def get_status(self):
-
         if self.direction.y < 0 and self.stunned == False:
             self.status = 'jump'
         elif self.direction.y < 0 and self.stunned == True:
@@ -174,26 +171,23 @@ class Player(pg.sprite.Sprite):
                 self.status = 'idle'
 
     def apply_gravity(self):
-
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
 
     def jump(self):
-
         self.direction.y = self.jump_speed
         self.stunned = False
 
     def stun(self):
-
         self.direction.y = self.jump_speed * (2 / 3)
         self.stunned = True
 
     def update(self, events):
-
         self.get_input(events)
         self.get_status()
         self.char_anim()
         self.dust_anim()
+
 
 class Projectile(pg.sprite.Sprite):
     def __init__(self, surface, pos, mouse_pos):
@@ -213,7 +207,6 @@ class Projectile(pg.sprite.Sprite):
         self.sfx.set_volume(1.0)
 
     def update(self):
-
         self.x -= int(self.x_vel)
         self.y -= int(self.y_vel)
 

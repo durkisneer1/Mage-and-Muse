@@ -1,11 +1,14 @@
-import pygame as pg
-from settings import *
 import random
-from player import Player, Projectile
-from particles import ParticleEffect
+
+import pygame as pg
+
+from UI import Health, BossHealth
 from decoration import Decoration
 from events import Notes, Pianos, Horns, LeftCymbal, RightCymbal
-from UI import Health, BossHealth
+from particles import ParticleEffect
+from player import Player, Projectile
+from settings import *
+
 
 class Level:
     def __init__(self, surface):
@@ -50,7 +53,6 @@ class Level:
         self.boss_hp = BossHealth(self.display_surf)
 
     def dust_jump(self, pos):
-
         if self.player.sprite.facing_right:
             pos -= pg.math.Vector2(10, 5)
         else:
@@ -58,16 +60,14 @@ class Level:
 
         jump_particle = ParticleEffect(pos, 'jump')
         self.dust_sprite.add(jump_particle)
-    
-    def get_stand(self):
 
+    def get_stand(self):
         if self.player.sprite.on_ground:
             self.player_on_ground = True
         else:
             self.player_on_ground = False
 
     def dust_land(self):
-
         if not self.player_on_ground and self.player.sprite.on_ground and not self.dust_sprite.sprites():
             if self.player.sprite.facing_right:
                 offset = pg.math.Vector2(10, 15)
@@ -77,19 +77,16 @@ class Level:
             self.dust_sprite.add(fall_particle)
 
     def decoration_draw(self):
-        
         self.decor_group = pg.sprite.GroupSingle()
         self.decor_sprite = Decoration(self.display_surf)
         self.decor_group.add(self.decor_sprite)
 
     def hard_scenery(self):
-
         if self.boss_hp.health_remain <= 1250:
             self.decor_sprite.bg_easy = False
             self.decor_sprite.enemy_sprite.enemy_easy = False
 
     def random_obstacle(self, current_time, events):
-
         for event in events:
             if self.boss_hp.health_remain >= 1250:
                 if event.type == self.SPAWN_RANDOM_OBS_EASY:
@@ -148,20 +145,17 @@ class Level:
                     if self.L_cymbal_sprite.crashed == True:
                         self.L_cymbal_sprite.sfx.play()
                         self.hit_played = True
-        
-    def player_draw(self):
 
+    def player_draw(self):
         self.player = pg.sprite.GroupSingle()
         self.player_sprite = Player((WIDTH / 2, HEIGHT / 2), self.display_surf, self.dust_jump)
         self.player.add(self.player_sprite)
 
     def setup_level(self):
-
         self.decoration_draw()
         self.player_draw()
-                    
-    def limit(self):
 
+    def limit(self):
         player = self.player.sprite
         direction_x = player.direction.x
 
@@ -175,7 +169,6 @@ class Level:
             player.speed = 7
 
     def h_collision(self):
-
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
 
@@ -187,9 +180,8 @@ class Level:
 
                 elif player.direction.x > 0:
                     player.rect.right = sprite.c_rect.left
-    
-    def v_collision(self):
 
+    def v_collision(self):
         player = self.player.sprite
         player.apply_gravity()
 
@@ -212,7 +204,6 @@ class Level:
             player.on_ceiling = False
 
     def obs_collision(self, current_time):
-
         for sprite in self.obs_group:
             if sprite.rect.colliderect(self.player.sprite.rect) and self.player_hit == False:
                 if self.horn_sprite != None and sprite == self.horn_sprite:
@@ -239,7 +230,6 @@ class Level:
             self.player_hit = False
 
     def shooting(self, mouse_pos):
-        
         if pg.mouse.get_pressed()[0]:
             self.shoot_delay += 1
             if self.shoot_delay >= 10:
@@ -247,12 +237,11 @@ class Level:
                 self.projectile_group.add(projectile)
                 projectile.sfx.play()
                 self.shoot_delay = 0
-        
+
         for sprite in self.projectile_group:
             sprite.update()
 
     def enemy_manager(self):
-
         for sprite in self.projectile_group:
             if self.decor_sprite.enemy_sprite.hitbox_rect.collidepoint((sprite.x, sprite.y)):
                 sprite.kill()
@@ -261,7 +250,6 @@ class Level:
         self.boss_hp.draw()
 
     def run(self, events, current_time, mouse_pos):
-
         # floor
         self.decor_sprite.draw()
 

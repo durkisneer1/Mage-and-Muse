@@ -1,14 +1,15 @@
 import pygame as pg
-from settings import *
+
 from level import Level
 from screens import Lose, Pause, Win, Menu, Controls, Button
+from settings import *
 
 pg.mixer.pre_init(48000, -16, 2, 512)
 pg.init()
 
+
 class Game:
     def __init__(self):
-        
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption('Mage and Muse')
         pg.display.set_icon(pg.image.load('graphics/character/wand/wand.png'))
@@ -37,11 +38,10 @@ class Game:
         pg.mixer.music.set_volume(0.25)
 
     def menu(self):
-
         pg.mixer.music.stop()
         running = True
         while running:
-            
+
             events = pg.event.get()
             for event in events:
                 if event.type == pg.QUIT:
@@ -61,18 +61,17 @@ class Game:
             if self.exit_button.draw():
                 pg.quit()
                 raise SystemExit
-            
+
             pg.display.update()
             self.clock.tick(60)
 
     def game(self):
-
         pg.mixer.music.play(-1)
         pg.mixer.music.set_volume(0.25)
 
         running = True
         while running:
-            
+
             events = pg.event.get()
             for event in events:
                 if event.type == pg.QUIT:
@@ -95,12 +94,11 @@ class Game:
             self.clock.tick(60)
 
     def win(self):
-
         pg.mixer.music.fadeout(1500)
 
         running = True
         while running:
-            
+
             events = pg.event.get()
             for event in events:
                 if event.type == pg.QUIT:
@@ -121,12 +119,11 @@ class Game:
             self.clock.tick(60)
 
     def lose(self):
-
         pg.mixer.music.fadeout(1500)
 
         running = True
         while running:
-            
+
             events = pg.event.get()
             for event in events:
                 if event.type == pg.QUIT:
@@ -147,12 +144,11 @@ class Game:
             self.clock.tick(60)
 
     def pause(self):
-
         pg.mixer.music.set_volume(0.1)
 
         running = True
         while running:
-            
+
             events = pg.event.get()
             for event in events:
                 if event.type == pg.QUIT:
@@ -175,10 +171,9 @@ class Game:
             self.clock.tick(60)
 
     def controls(self):
-
         running = True
         while running:
-            
+
             events = pg.event.get()
             for event in events:
                 if event.type == pg.QUIT:
@@ -192,6 +187,7 @@ class Game:
 
             pg.display.update()
             self.clock.tick(60)
+
 
 if __name__ == '__main__':
     launch = Game()
