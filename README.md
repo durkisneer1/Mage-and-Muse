@@ -1,6 +1,8 @@
 # Mage-and-Muse
 Submission for the 2022 Pygame Summer Jam
 
+Link -> https://durkisneer.itch.io/mage-and-muse
+
 1. Download and extract the zip file.
 
 2. Run the executable.
