@@ -9,21 +9,20 @@ class Enemy(pg.sprite.Sprite):
         super().__init__()
 
         self.display_surf = surface
-        self.hitbox()
+        self.hitbox_surf = pg.Surface((320, 100))
+        self.hitbox_rect = self.hitbox_surf.get_rect(center=(WIDTH / 2, 255))
 
         # imports
-        self.enemy_import()
+        self.enemy_surf_easy_idle = import_folder('graphics/enemy/main/idle/easy', 4)
+        self.enemy_surf_hard_idle = import_folder('graphics/enemy/main/idle/hard', 4)
+        self.enemy_frame = 0
+        self.enemy_image = self.enemy_surf_easy_idle[int(self.enemy_frame)]
+        self.enemy_anim_speed = 0.05
 
         # status
         self.up = False
         self.y_pos = 85
         self.enemy_easy = True
-
-    def enemy_import(self):
-        self.enemy_surf_easy_idle = import_folder('graphics/enemy/main/idle/easy', 4)
-        self.enemy_surf_hard_idle = import_folder('graphics/enemy/main/idle/hard', 4)
-        self.enemy_frame = 0
-        self.enemy_anim_speed = 0.05
 
     def enemy_anim_easy(self):
         if self.enemy_easy:
@@ -44,12 +43,6 @@ class Enemy(pg.sprite.Sprite):
         self.enemy_image = enemy_sprite[int(self.enemy_frame)]
         self.display_surf.blit(self.enemy_image, (0, self.y_pos))
 
-    def hit_box(self):
-        self.hitbox_surf = pg.Surface((320, 100))
-        self.hitbox_rect = self.hitbox_surf.get_rect(center=(WIDTH / 2, 255))
-
-        self.display_surf.blit(self.hitbox_surf, self.hitbox_rect)
-
     def draw(self):
-        self.hit_box()
+        self.display_surf.blit(self.hitbox_surf, self.hitbox_rect)
         self.enemy_anim_easy()

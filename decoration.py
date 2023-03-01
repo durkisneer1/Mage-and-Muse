@@ -12,16 +12,16 @@ class Decoration(pg.sprite.Sprite):
 
         # imports
         self.bg_import()
-        self.ground_import()
-        self.enemy_sprite = Enemy(self.display_surf)
 
-        self.bg_easy = True
-
-    def ground_import(self):
+        # Platform assets
         self.platform_back_easy = pg.transform.scale(pg.image.load('graphics/terrain/easy/midground.png'), (900, 75))
         self.platform_front_easy = pg.transform.scale(pg.image.load('graphics/terrain/easy/foreground.png'), (900, 75))
         self.platform_back_hard = pg.transform.scale(pg.image.load('graphics/terrain/hard/midground.png'), (900, 75))
         self.platform_front_hard = pg.transform.scale(pg.image.load('graphics/terrain/hard/foreground.png'), (900, 75))
+
+        self.enemy_sprite = Enemy(self.display_surf)
+
+        self.bg_easy = True
 
     def mid_ground(self):
         if self.bg_easy:
